@@ -1,1 +1,3 @@
-/jpkg.iml
+*.iml
+.idea
+target

@@ -25,7 +25,9 @@ public class QuartzTest {
             Trigger trigger = TriggerBuilder.newTrigger()
                     .withIdentity("user1", "group1")
                     .startNow()
-                    .withSchedule(SimpleScheduleBuilder.simpleSchedule().withIntervalInSeconds(5).repeatForever())
+                    .withSchedule(SimpleScheduleBuilder.simpleSchedule()
+                            .withIntervalInSeconds(5)
+                            .repeatForever())
                     .build();
 
             defaultScheduler.scheduleJob(jobDetail, trigger);
