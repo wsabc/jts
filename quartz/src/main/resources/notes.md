@@ -71,6 +71,63 @@ org.quartz.jobStore.tcConfigUrl = localhost:9510
 org.quartz.plugin.triggHistory.class = org.quartz.plugins.history.LoggingTriggerHistoryPlugin
 
 cluster
+定时任务常见方式:
+crontab+sql
+script(python)+sql
+spring+timer
+常见问题:
+直接操作db,增加db压力,可能会引入过多的中间表
+业务/代码不能重用
+无法负载均衡
+不能恢复失败的任务
+异构系统,增加团队沟通成本
+分布式场景存在任务竞争问题,可能会写死运行机器
+
+较好的方案:
+javabased, spring集成, 高可用, 负载均衡
+参考: quartz jcrontab cron4j elastic-job等
+
+quartz集群原理分析(https://tech.meituan.com/2014/08/31/mt-crm-quartz.html):
+Spring通过提供org.springframework.scheduling.quartz下的封装类对Quartz支持
+qz集群通过共享数据库来感知整个集群
+<prop key="org.quartz.jobStore.isClustered">true</prop>
+<prop key="org.quartz.jobStore.clusterCheckinInterval">15000</prop>
+<property name="startupDelay" value="30" />应用启动完后在启动qz调度器
+<property name="overwriteExistingJobs" value="true" />
+
+集群中节点依赖于数据库来传播Scheduler实例的状态，你只能在使用JDBC JobStore时应用Quartz集群
+org.quartz.jobStore.isClustered属性为true，通知Scheduler实例要它参与到一个集群当中
+org.quartz.jobStore.clusterCheckinInterval属性定义了Scheduler实例检入到数据库中的频率(单位：毫秒)。
+Scheduler检查是否其他的实例到了它们应当检入的时候未检入；这能指出一个失败的Scheduler实例，且当前 Scheduler会以此来接管任何执行失败并可恢复的Job。
+通过检入操作，Scheduler 也会更新自身的状态记录。clusterChedkinInterval越小，Scheduler节点检查失败的Scheduler实例就越频繁。默认值是 15000 (即15 秒)。
+
+前提: 分布式部署时需要保证各个节点的系统时间一致
+核心表:
+QRTZ_SCHEDULER_STATE	存储少量的有关Scheduler的状态信息，和别的Scheduler实例
+QRTZ_LOCKS	存储程序的悲观锁的信息
+
+Quartz线程模型
+SimpleThreadPool创建了一定数量的WorkerThread实例来使得Job能够在线程中进行处理
+QuartzScheduler被创建时创建一个QuartzSchedulerThread实例,Scheduler调度线程
+QuartzScheduler调度线程不断获取trigger，触发trigger，释放trigger
+
+select * from QD_QRTZ_LOCKS where sched_name = '' and lock_name = '' for update
+当一个线程使用上述的SQL对表中的数据执行查询操作时，若查询结果中包含相关的行，数据库就对该行进行ROW LOCK；
+若此时，另外一个线程使用相同的SQL对表的数据进行查询，由于查询出的数据行已经被数据库锁住了，
+此时这个线程就只能等待，直到拥有该行锁的线程完成了相关的业务操作，执行了commit动作后，数据库才会释放了相关行的锁，这个线程才能继续执行。
+
+具体执行过程:
+node1: select...for update,nodata,nolock,insert,updateTrigger,commit/rollback,job execute
+node2: select...for update,nodata,nolock,insert,updateTrigger,commit/rollback == 和node1竞争,两个至少有一个成功
+node3: select...for update,havedata, lock,wait,selectTrigger=nodata,return
+
+acquireNextTriggers
+triggersFired
+releaseAcquiredTrigger
+每个方法都在自己的事务里
+更新完trigger以后就run job
+shell.initialize(qs);
+qsRsrcs.getThreadPool().runInThread(shell) 
 
 QuartzDesk
 QuartzDesk是一个Java Quartz调度器管理和监控的图形化工具,旨在为使用Quartz的Java开发者提供查询和监控的功能
