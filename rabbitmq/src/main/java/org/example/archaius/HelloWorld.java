@@ -1,4 +1,4 @@
-package org.example.rabbitmq;
+package org.example.archaius;
 
 import com.rabbitmq.client.*;
 

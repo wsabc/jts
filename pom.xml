@@ -20,6 +20,7 @@
         <module>quartz</module>
         <module>rabbitmq</module>
         <module>graphql</module>
+        <module>springcloud</module>
     </modules>
 
     <properties>
