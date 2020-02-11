@@ -1,0 +1,20 @@
+调用链跟踪系统,又称为tracing
+当前微服务中较流行的两款开源分布式tracing系统：Zipkin(java)和Jaeger(golang)
+
+Trace表示对一次请求完整调用链的跟踪，而将两个服务例如上面的服务A和服务B的请求/响应过程叫做一次Span
+我们可以将一次trace，看成是span的有向图，而这个有向图的边即为span
+
+OpenTracing是一套标准，它通过提供平台无关、厂商无关的API
+
+OpenTracing标准中目前定义了两种类型的引用 ChildOf/FollowsFrom
+两种参考类型都具体模拟了child span与parent span之间的直接因果关系
+
+ChildOf:
+一个span A可以是ChildOf另一个span B
+代表RPC服务器端的Span，可以是ChildOf代表该RPC客户端的span
+代表SQL插入的Span，可以是ChildOf代表ORM save方法的Span 
+
+FollowsFrom
+一些parent Spans不以任何方式依赖他们的child Spans的结果
+在这些情况下，我们只说child Span从因果意义上来自parent Span
+

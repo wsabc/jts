@@ -21,6 +21,7 @@
         <module>rabbitmq</module>
         <module>graphql</module>
         <module>springcloud</module>
+        <module>tracing</module>
     </modules>
 
     <properties>
