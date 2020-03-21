@@ -22,6 +22,7 @@
         <module>graphql</module>
         <module>springcloud</module>
         <module>tracing</module>
+        <module>mongodb</module>
     </modules>
 
     <properties>
