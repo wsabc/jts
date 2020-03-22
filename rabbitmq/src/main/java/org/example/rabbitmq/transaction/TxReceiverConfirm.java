@@ -1,4 +1,4 @@
-package org.example.rabbitmq;
+package org.example.rabbitmq.transaction;
 
 import com.rabbitmq.client.Channel;
 import com.rabbitmq.client.Connection;
@@ -7,16 +7,19 @@ import com.rabbitmq.client.DeliverCallback;
 
 import java.nio.charset.StandardCharsets;
 
-public class Receiver {
-    private static final String QUEUE_NAME = "hello";
+public class TxReceiverConfirm {
+    private static final String QUEUE_NAME = "helloConfirm";
     public static void main(String[] args) throws Exception {
-        Receiver receiver = new Receiver();
+        TxReceiverConfirm receiver = new TxReceiverConfirm();
         receiver.recv(QUEUE_NAME);
     }
     public void recv(String queue) throws Exception {
         ConnectionFactory factory = new ConnectionFactory();
         factory.setHost("localhost");
-        // don't use try-with-resource, we need consumer keep running, not move on, close and exit
+        factory.setPort(5672);
+        factory.setVirtualHost("/demo");
+        factory.setUsername("user");
+        factory.setPassword("123456");
         Connection connection = factory.newConnection();
         Channel channel = connection.createChannel();
         channel.queueDeclare(queue, false, false, false, null);

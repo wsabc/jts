@@ -19,7 +19,7 @@ import java.io.IOException;
 
 @Component
 @RabbitListener(queues = "sd-q")
-public class RabbitmqConsumer {
+public class RabbitConsumer {
 
     @RabbitHandler
     public void directHandlerManualAck(String messageStruct, Message message, Channel channel) {

@@ -9,9 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 @SpringBootApplication
 @RestController
-public class RabbitMQSpring {
+public class RabbitApp {
     public static void main(String[] args) {
-        SpringApplication.run(RabbitMQSpring.class);
+        SpringApplication.run(RabbitApp.class);
     }
 
     @Autowired
@@ -20,10 +20,5 @@ public class RabbitMQSpring {
     @GetMapping("/send")
     public void send() {
         template.convertAndSend("sd-test", "sd.good.test", "this is a good test");
-    }
-
-    @GetMapping("/get")
-    public void get() {
-
     }
 }
