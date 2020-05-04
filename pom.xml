@@ -24,6 +24,7 @@
         <module>tracing</module>
         <module>mongodb</module>
         <module>springbootadmin</module>
+        <module>springtest</module>
     </modules>
 
     <properties>
