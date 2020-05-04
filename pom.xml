@@ -23,6 +23,7 @@
         <module>springcloud</module>
         <module>tracing</module>
         <module>mongodb</module>
+        <module>springbootadmin</module>
     </modules>
 
     <properties>
@@ -30,6 +31,14 @@
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
     </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.18.12</version>
+        </dependency>
+    </dependencies>
 
     <build>
         <plugins>

@@ -1,0 +1,17 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: demo-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: baidu.com
+          uri: https://www.baidu.com
+          predicates:
+            - Path=/baidu
+
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    reactor.ipc.netty: DEBUG

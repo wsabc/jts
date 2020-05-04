@@ -189,10 +189,15 @@ txCommit提交 txRollback回滚
 
 
 Spring集成
+@EnableRabbit RabbitAnnotationDrivenConfiguration引入@EnableRabbit注解，所以在程序中不用再加@EnableRabbit注解,用于扫描@RabbitListener @RabbitHandler注解过的类和方法
+@RabbitListener
+@RabbitHandler
+@RabbitListener 标注在类上面表示当有收到消息的时候，就交给 @RabbitHandler 的方法处理，具体使用哪个方法处理，根据 MessageConverter 转换后的参数类型
+@Payload和@Headers
 
-setPublisherReturns
+setPublisherReturns开启发送失败返回
 
-set
+setPublishConfirms开启发送确认
 
 basicRecover
 
@@ -204,7 +209,7 @@ RabbitTemplate.convertAndSend
 
 refund
 
-return
+
 
 延时消息
 可靠性消息
