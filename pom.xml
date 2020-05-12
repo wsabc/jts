@@ -25,6 +25,7 @@
         <module>mongodb</module>
         <module>springbootadmin</module>
         <module>springtest</module>
+        <module>miscellaneous</module>
     </modules>
 
     <properties>

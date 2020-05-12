@@ -106,3 +106,23 @@ contextManager.prepareTestInstance(target);
 
 https://github.com/serenity-bdd/serenity-cucumber-starter/blob/master/pom.xml
 
+-------------
+
+
+https://serenity-bdd.github.io/theserenitybook/latest/cucumber.html
+
+Infrastructure called by ?
+
+
+Cucumber runs the feature files via JUnit, and needs a dedicated test runner class to actually run the feature files. When you run the tests with Serenity, you use the CucumberWithSerenity test runner. You also need to use the @CucumberOptions class to provide the root directory where the feature files can be found.
+
+
+When no glue is provided, Cucumber will use the package of the annotated class. For example, if the annotated class is {@code com.example.RunCucumber} then glue is assumed to be located in {@code com.example}.
+
+@Steps
+
+The @Before hook marks a method that is run before each scenario. 
+
+
+https://dzone.com/articles/test-automation-seamless-integration-between-sprin#
+

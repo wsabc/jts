@@ -39,5 +39,6 @@ Assembly 插件的主要作用是，允许用户将项目输出与它的依赖�
 
 pluginManagement也是类似的
 
-
-
+安装jar到本地maven仓库
+mvn install:install-file -Dfile=d:\xyz-0.13.4.jar -DgroupId=cn.xyz -DartifactId=xyz -Dversion=0.13.4 -Dpackaging=jar
+可能还需要copy pom文件
