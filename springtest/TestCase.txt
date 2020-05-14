@@ -1,0 +1,113 @@
+TestCase
+TestSuite
+TestRunner
+
+创建一个 TestRunner 类
+运用 JUnit 的 JUnitCore 类的 runClasses 方法来运行上述测试类的测试案例
+获取在 Result Object 中运行的测试案例的结果
+
+beforeClass() 方法首先执行，并且只执行一次。
+afterClass() 方法最后执行，并且只执行一次。
+before() 方法针对每一个测试用例执行，但是是在执行测试用例之前。
+after() 方法针对每一个测试用例执行，但是是在执行测试用例之后。
+在 before() 方法和 after() 方法之间，执行每一个测试用例。
+
+测试用例是使用 JUnitCore 类来执行的。JUnitCore 是运行测试的外观类。它支持运行 JUnit 4 测试, JUnit 3.8.x 测试,或者他们的混合。 要从命令行运行测试，可以运行 java org.junit.runner.JUnitCore 。对于只有一次的测试运行，可以使用静态方法 runClasses(Class[])。
+
+测试套件意味着捆绑几个单元测试用例并且一起执行他们。在 JUnit 中，@RunWith 和 @Suite 注释用来运行套件测试。
+创建一个 java 类。
+在类中附上 @RunWith(Suite.class) 注释。
+使用 @Suite.SuiteClasses 注释给 JUnit 测试类加上引用。
+
+import org.junit.runner.RunWith;
+import org.junit.runners.Suite;
+@RunWith(Suite.class)
+@Suite.SuiteClasses({
+   TestJunit1.class,
+   TestJunit2.class
+})
+public class JunitTestSuite {   
+}  
+
+如果一个测试用例比起指定的毫秒数花费了更多的时间，那么 Junit 将自动将它标记为失败。timeout 参数和 @Test 注释一起使用。
+
+你可以测试代码是否它抛出了想要得到的异常。expected 参数和 @Test 注释一起使用。
+
+用 @RunWith(Parameterized.class) 来注释 test 类。
+创建一个由 @Parameters 注释的公共的静态方法，它返回一个对象的集合(数组)来作为测试数据集合。
+创建一个公共的构造函数，它接受和一行测试数据相等同的东西。
+为每一列测试数据创建一个实例变量。
+用实例变量作为测试数据的来源来创建你的测试用例。
+
+JUnit 5 = JUnit Platform + JUnit Jupiter + JUnit Vintage
+JUnit Platform： 用于JVM上启动测试框架的基础服务，提供命令行，IDE和构建工具等方式执行测试的支持。
+JUnit Jupiter：包含 JUnit 5 新的编程模型和扩展模型，主要就是用于编写测试代码和扩展代码。
+JUnit Vintage：用于在JUnit 5 中兼容运行 JUnit3.x 和 JUnit4.x 的测试用例。
+
+<dependency>
+  <groupId>org.junit.jupiter</groupId>
+  <artifactId>junit-jupiter-engine</artifactId>
+  <version>5.5.2</version>
+  <scope>test</scope>
+</dependency>
+
+@DisplayName
+@BeforeAll
+@AfterAll
+@BeforeEach
+@AfterEach
+@Disable
+@Nested
+@RepeatedTest
+assertTimeoutPreemptively
+assertThrows
+@ValueSource
+@CsvSource
+
+
+maven-surefire-plugin是maven里执行测试用例的插件，不显示配置就会用默认配置。这个插件的surefire:test命令会默认绑定maven执行的test阶段。
+
+    <configuration>
+        <skipTests>true</skipTests>
+    </configuration>
+
+-DskipTests=true
+-Dmaven.test.skip=true
+-Dtest=App2Test指定执行App2Test
+
+执行完mvn test后,会在target目录下生成测试报告target/surefire-reports
+
+maven FailSafe插件是用来执行集成测试的，Surefire插件则是用来执行单元测试的
+FailSafe插件工作在上面的integration-test以及verify阶段，与surefire插件不同的是该插件不会因为集成测试中失败而终止整个过程，也就是说post-integration-test可以确定执行。
+FailSafe插件有两个goal：integration-test 和verify。
+
+maven-failsafe-plugin会调用<include>**/*TestSuite.java</include>里面的类,执行集成测试
+
+CucumberWithSerenity called by Junit
+CucumberOptions 指定features和glue
+
+Before Before hooks run before the first step of each scenario.
+BeforeStep
+
+After hooks run after the last step of each scenario, even when the step result is failed, undefined, pending, or skipped.
+
+Step hooks invoked before and after a step. The hooks have ‘invoke around’ semantics. Meaning that if a BeforeStep hook is executed the AfterStep hooks will also be executed regardless of the result of the step. If a step did not pass, the following step and its hooks will be skipped.
+
+
+If you want to write any step-definitons by lambda-expression, You must have to import cucumber-java8 api(ex.cucumber.api.java8.En) in your step-definition(java) file.
+You may wrtie step-definitions by using lambda-expression with both constructors and methods.
+Lambda-steps inside Constructors
+https://github.com/cucumber/cucumber-eclipse/wiki/Lambda-Expression-support-for-Cucumber-Java8
+
+
+serenity-maven-plugin to have reports aggregated from test results
+
+
+https://cucumber.io/docs/gherkin/step-organization/
+
+IntelliJ Shorten Command Line for Cucumber Tests [duplicate]
+<property name="dynamic.classpath" value="true" />
+
+https://thepracticaldeveloper.com/2018/03/31/cucumber-tests-spring-boot-dependency-injection/
+
+https://thepracticaldeveloper.com/2017/07/30/guide-spring-boot-controller-tests/
